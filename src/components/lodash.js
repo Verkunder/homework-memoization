@@ -1,14 +1,19 @@
-// Requiring the lodash library
-const _ = require("lodash");
+var _ = require("lodash")
 
-var object = { 'cpp': 5, 'java': 8 };
+var fibonacci = _.memoize(function (n) {
+    return n < 2 ? n : fibonacci(n - 1) + fibonacci(n - 2)
+})
 
-// Use of _.memoize() method
-var values = _.memoize(_.values);
+var fibonacci1 = function (n) {
+    return n < 2 ? n : fibonacci1(n - 1) + fibonacci1(n - 2)
+}
 
-// value of object
-console.log(values(object));
+var startTimestamp = new Date().getTime()
+var result = fibonacci(1000)
+var endTimestamp = new Date().getTime()
+console.log(result + " in " + (endTimestamp - startTimestamp) + " ms")
 
-// Modify the result cache.
-values.cache.set(object, ['html', 'css']);
-console.log(values(object));
+startTimestamp = new Date().getTime()
+result = fibonacci1(30)
+endTimestamp = new Date().getTime()
+console.log(result + " in " + (endTimestamp - startTimestamp) + " ms")
