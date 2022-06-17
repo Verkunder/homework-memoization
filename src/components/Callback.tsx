@@ -1,33 +1,32 @@
-import React, {useState, useCallback} from 'react';
-const functionsCounter = new Set()
+import React, {useState, useCallback, useEffect} from 'react';
+import Child from "./child";
 
 const Callback = () => {
-    const [count, setCount] = useState(0)
-    const [otherCounter, setOtherCounter] = useState(0)
+    const [counter, setCounter] = useState(0);
+    const [counterTwo, setCounterTwo] = useState(0);
 
-    const increment = useCallback(() => {
-        setCount(count + 1)
-    }, [count])
-    const decrement = useCallback(() => {
-        setCount(count - 1)
-    }, [count])
-    const incrementOtherCounter = useCallback(() => {
-        setOtherCounter(otherCounter + 1)
-    }, [otherCounter])
-    functionsCounter.add(increment)
-    functionsCounter.add(decrement)
-    functionsCounter.add(incrementOtherCounter)
+    const updateOne = () => {
+        console.log(
+            "Я не мемоизирован"
+        );
+    };
 
-    console.log(functionsCounter.size)
+    const updateTwo = useCallback(() => {
+        console.log(
+            "Я мемоизирован!"
+        );
+    }, [counter]);
 
     return (
-        <>
-            Count: {count}
-            <button onClick={increment}>+</button>
-            <button onClick={decrement}>-</button>
-            <button onClick={incrementOtherCounter}>incrementOtherCounter</button>
-        </>
-    )
+        <div className="App">
+            <button onClick={() => setCounter(counter + 1)}>One</button>
+            <br />
+            <button onClick={() => setCounterTwo(counterTwo + 1)}>
+                Two
+            </button>
+            <Child updateOne ={updateOne} updateTwo ={updateTwo} />
+        </div>
+    );
 };
 
 export default Callback;
