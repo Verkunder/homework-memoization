@@ -4,8 +4,8 @@ console.log("Simple call", add(3))
 // простая функция, принимающая другую функцию и
 // возвращающая её же, но с мемоизацией
 const memoize = (fn) => {
-    let cache = {}
-    return (...args) => {
+    let cache = new Map()
+    const cached = (...args) => {
         let n = args[0] // тут работаем с единственным аргументом
         if (n in cache) {
             console.log("Fetching from cache")
@@ -16,12 +16,16 @@ const memoize = (fn) => {
             cache[n] = result
             return result
         }
+        return cache
     }
+    cached.cache = cache
+    return cached
 }
 // создание функции с мемоизацией из чистой функции 'add'
 const memoizedAdd = memoize(add)
 console.log(memoizedAdd(3)) // вычислено
 console.log(memoizedAdd(3)) // вычислено
+console.log(memoizedAdd.cache)
 console.log(memoizedAdd(3)) // взято из кэша
 console.log(memoizedAdd(4)) // вычислено
 console.log(memoizedAdd(4)) // взято из кэша
