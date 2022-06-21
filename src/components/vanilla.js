@@ -19,13 +19,16 @@ const memoize = (fn) => {
         }
         return cache
     }
+    const clearCache = () => {
+        cache = {}
+    }
     cached.cache = cache
-    return cached
+    return [cached, clearCache]
 }
 // создание функции с мемоизацией из чистой функции 'add'
-const memoizedAdd = memoize(add)
-console.log(memoizedAdd(3)) // вычислено
-console.log(memoizedAdd(3)) // вычислено
-console.log(memoizedAdd(3, {})) // взято из кэша
-console.log(memoizedAdd(4)) // вычислено
-console.log(memoizedAdd(4)) // взято из кэша
+const [cached, clearCache] = memoize(add)
+console.log(cached(3)) // вычислено
+console.log(clearCache()) // вычислено
+console.log(cached(3)) // взято из кэша
+console.log(cached(4)) // вычислено
+console.log(cached(4)) // взято из кэша
